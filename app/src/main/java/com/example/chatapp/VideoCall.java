@@ -23,7 +23,7 @@ import java.net.URL;
 
 import timber.log.Timber;
 
-public class videocall extends AppCompatActivity {
+public class VideoCall extends AppCompatActivity {
 
     private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -36,10 +36,6 @@ public class videocall extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_videocall);
-
-        String sessionId = getIntent().getStringExtra("EXTRA_SESSION_ID");
-        Log.i("SESSION", sessionId);
-
 
         // Initialize default options for Jitsi Meet conferences.
         URL serverURL;
@@ -63,17 +59,6 @@ public class videocall extends AppCompatActivity {
         JitsiMeet.setDefaultConferenceOptions(defaultOptions);
 
         registerForBroadcastMessages();
-
-        JitsiMeetConferenceOptions options
-                = new JitsiMeetConferenceOptions.Builder()
-                .setRoom(sessionId)
-                // Settings for audio and video
-                //.setAudioMuted(true)
-                //.setVideoMuted(true)
-                .build();
-        // Launch the new activity with the given options. The launch() method takes care
-        // of creating the required Intent and passing the options.
-        JitsiMeetActivity.launch(this, options);
     }
 
     @Override
@@ -81,6 +66,26 @@ public class videocall extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
 
         super.onDestroy();
+    }
+
+    public void onButtonClick(View v) {
+        EditText editText = findViewById(R.id.conferenceName);
+        String text = editText.getText().toString();
+
+        if (text.length() > 0) {
+            // Build options object for joining the conference. The SDK will merge the default
+            // one we set earlier and this one when joining.
+            JitsiMeetConferenceOptions options
+                    = new JitsiMeetConferenceOptions.Builder()
+                    .setRoom(text)
+                    // Settings for audio and video
+                    //.setAudioMuted(true)
+                    //.setVideoMuted(true)
+                    .build();
+            // Launch the new activity with the given options. The launch() method takes care
+            // of creating the required Intent and passing the options.
+            JitsiMeetActivity.launch(this, options);
+        }
     }
 
     private void registerForBroadcastMessages() {

@@ -17,8 +17,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.chatapp.Adapter.MessageAdapter;
-import com.example.chatapp.Adapter.UserAdapter;
-import com.example.chatapp.Model.Chatlist;
 import com.example.chatapp.network.APIService;
 import com.example.chatapp.Model.Chat;
 import com.example.chatapp.Model.User;
@@ -76,17 +74,6 @@ public class MessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
 
-        ImageButton imageButton = findViewById(R.id.imageAudioMeeting);
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), videocall.class);
-                view.getContext().startActivity(intent);
-                intent.putExtra("EXTRA_SESSION_ID", username.getText() + " " + fuser.getDisplayName());
-                startActivity(intent);
-            }
-        });
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
@@ -127,6 +114,15 @@ public class MessageActivity extends AppCompatActivity {
                     Toast.makeText(MessageActivity.this, "You can't send empty message", Toast.LENGTH_SHORT).show();
                 }
                 text_send.setText("");
+            }
+        });
+
+        ImageButton imageButton = findViewById(R.id.imageAudioMeeting);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), VideoCall.class);
+                view.getContext().startActivity(intent);
             }
         });
 
